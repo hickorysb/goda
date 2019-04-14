@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Game Of Dirty Answers</title>
+</head>
+<body onload="create();" id="body" style="visibility: hidden;">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/goda.js"></script>
+    <h1>Welcome to Game of Dirty Answers</h1>
+    <h3>This is a work in progress</h3>
+    <div id="errors">
+        <h4 id="gameFull" style="display: none;color: red;">The game is full!</h4>
+        <h4 id="gameStarted" style="display: none;color: red;">The game is already in progress!</h4>
+    </div>
+    <div id="userForm">
+        <input type="text" id="usernameEntry" />
+        <button type="button" onclick="setUser();">Set Username</button>
+        <p style="color: red; display: none;" id="usernameInvalid">Your username is invalid or already in use.</p>
+    </div>
+    <div id="waiting" style="display: none;">
+        <h4>Waiting For Players!</h4>
+        <button type="button" style="display: none" id="startButton" onclick="startGame();">Start Game</button>
+        <p style="color: red; display: none;" id="tooFewPlayers">At least three people must be present to play.</p>
+    </div>
+    <div id="game" style="display: none;">
+        <h4 id="phrase"></h4>
+        <div id="responses" style="display: none">
+            <p id="response1"></p>
+            <p id="response2"></p>
+            <p id="response3"></p>
+            <p id="response4"></p>
+            <p id="response5"></p>
+            <p id="response6"></p>
+            <p id="response7"></p>
+            <p id="response8"></p>
+        </div>
+        <h4 id="waitingr">Waiting for responses</h4>
+        <h4 id="winner" style="display: none"></h4>
+        <button id="newRound" type="button" onclick="newRound();" style="display: none">New Round</button>
+        <div id="judge" style="display: none">
+            <button type="button" style="display:none" onclick="submitDecision(1);" id="btnresponse1">Response 1</button>
+            <button type="button" style="display:none" onclick="submitDecision(2);" id="btnresponse2">Response 2</button>
+            <button type="button" style="display:none" onclick="submitDecision(3);" id="btnresponse3">Response 3</button>
+            <button type="button" style="display:none" onclick="submitDecision(4);" id="btnresponse4">Response 4</button>
+            <button type="button" style="display:none" onclick="submitDecision(5);" id="btnresponse5">Response 5</button>
+            <button type="button" style="display:none" onclick="submitDecision(6);" id="btnresponse6">Response 6</button>
+            <button type="button" style="display:none" onclick="submitDecision(7);" id="btnresponse7">Response 7</button>
+            <button type="button" style="display:none" onclick="submitDecision(8);" id="btnresponse8">Response 8</button>
+        </div>
+        <div id="respondent" style="display: none">
+            <input type="text" id="response" />
+            <button type="button" id="submitResponse" onclick="submitResponse();">Submit Response</button>
+        </div>
+    </div>
+    <div id="playerList" style="display: none;">
+        <h3>Player List:</h3>
+        <p id="player1"></p>
+        <p id="player2"></p>
+        <p id="player3"></p>
+        <p id="player4"></p>
+        <p id="player5"></p>
+        <p id="player6"></p>
+        <p id="player7"></p>
+        <p id="player8"></p>
+    </div>
+</body>
+</html>
