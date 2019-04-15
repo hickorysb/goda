@@ -1,5 +1,5 @@
 const express = require('express');
-const questions = require('./questions.json');
+var questions = require('./questions.json');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io').listen(server);
@@ -13,8 +13,10 @@ var players = ["", "", "", "", "", "", "", ""];
 var responses = ["", "", "", "", "", "", "", ""];
 var responseSIDs = ["", "", "", "", "", "", "", ""];
 var currentResonseCount = 0;
-var usedPhrases = {};
-var randomProperty = function (obj) {
+function getKeyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value);
+}
+function randomProperty(obj) {
     var keys = Object.keys(obj)
     return obj[keys[keys.length * Math.random() << 0]];
 };
@@ -177,7 +179,7 @@ io.on('connection', function (socket) {
             io.sockets.emit('PlayerListUpdate', players);
             io.sockets.emit('StartingGame', currentJudge.sid);
             let phrase = randomProperty(questions);
-            usedPhrases[phrase] = "Used";
+            delete questions[getKeyByValue(questions, phrase)];
             io.sockets.emit('NewPhrase', phrase)
         } else {
             socket.emit('NotEnoughPlayers');
@@ -201,54 +203,37 @@ io.on('connection', function (socket) {
     });
 
     socket.on('NewRound', function () {
-        responseSIDs = ["", "", "", "", "", "", "", ""];
-        responses = ["", "", "", "", "", "", "", ""];
-        currentResonseCount = 0;
-        let phrase = null;
-        let success = true;
-        let pr = 0;
-        while (phrase == null) {
-            if (pr < Object.keys(questions).length) {
-                phrase = randomProperty(questions);
-                if (phrase in usedPhrases) {
-                    phrase = null;
+        if (Object.keys(questions).length > 0) {
+            responseSIDs = ["", "", "", "", "", "", "", ""];
+            responses = ["", "", "", "", "", "", "", ""];
+            currentResonseCount = 0;
+            phrase = randomProperty(questions);
+            delete questions[getKeyByValue(questions, phrase)];
+            let i = 0;
+            for (var key in clients) {
+                players[i] = clients[key].data.username;
+                if (clients[key].data.host) {
+                    players[i] = players[i] + ' (Host)';
                 }
-                pr++;
-            } else {
-                success = false;
-                phrase = 'not';
+                if (clients[key] == currentJudge) {
+                    players[i] = players[i] + ' (Judge)';
+                }
+                i++;
             }
-        }
-        let i = 0;
-        for (var key in clients) {
-            players[i] = clients[key].data.username;
-            if (clients[key].data.host) {
-                players[i] = players[i] + ' (Host)';
+            while (i <= 8) {
+                players[i] = ''
+                i++;
             }
-            if (clients[key] == currentJudge) {
-                players[i] = players[i] + ' (Judge)';
-            }
-            i++;
-        }
-        while (i <= 8) {
-            players[i] = ''
-            i++;
-        }
-        io.sockets.emit('PlayerListUpdate', players);
-        if (success) {
-            usedPhrases[phrase] = 'Used';
+            io.sockets.emit('PlayerListUpdate', players);
             io.sockets.emit('StartingNewRound');
             io.sockets.emit('NewPhrase', phrase);
             io.sockets.emit('StartingGame', currentJudge.sid);
         } else {
             io.sockets.emit('GameOver');
-            io.sockets.emit('tooFewPlayers');
             responseSIDs = ["", "", "", "", "", "", "", ""];
             responses = ["", "", "", "", "", "", "", ""];
             currentResonseCount = 0;
-            for (var key in usedPhrases) {
-                delete usedPhrases[key];
-            }
+            questions = require('./questions.json');
             gameStarted = false;
         }
     });
