@@ -13,6 +13,7 @@ var players = ["", "", "", "", "", "", "", ""];
 var responses = ["", "", "", "", "", "", "", ""];
 var responseSIDs = ["", "", "", "", "", "", "", ""];
 var currentResonseCount = 0;
+var readyCount = 0;
 function getKeyByValue(object, value) {
     return Object.keys(object).find(key => object[key] === value);
 }
@@ -40,7 +41,8 @@ io.on('connection', function (socket) {
             'points': 0,
             'role': null,
             'host': false,
-            'player': false
+            'player': false,
+            'ready': false
         }
     }
 
@@ -78,8 +80,12 @@ io.on('connection', function (socket) {
         delete usernames[clients[socket.id].data.username];
         if (clients[socket.id].data.player == true) {
             let wasHost = clients[socket.id].data.host;
+            let wasReady = clients[socket.id].data.ready;
             delete clients[socket.id];
             playerCount--;
+            if (wasReady) {
+                readyCount--;
+            }
             let i = 0;
             for (var key in clients) {
                 players[i] = clients[key].data.username;
@@ -96,15 +102,13 @@ io.on('connection', function (socket) {
                 i++;
             }
             io.sockets.emit('PlayerListUpdate', players);
-            if (playerCount < 3 && gameStarted) {
+            if (readyCount < 3 && gameStarted) {
                 gameStarted = false;
                 io.sockets.emit('tooFewPlayersLeft');
                 responseSIDs = ["", "", "", "", "", "", "", ""];
                 responses = ["", "", "", "", "", "", "", ""];
                 currentResonseCount = 0;
-                for (var key in usedPhrases) {
-                    delete usedPhrases[key];
-                }
+                questions = require('./questions.json');
             } else if (gameStarted && wasHost) {
                 newHost = randomProperty(clients)
                 clients[newHost.sid].data.host = true;
@@ -132,7 +136,7 @@ io.on('connection', function (socket) {
     });
 
     socket.on('SetUser', function (username) {
-        if (username in usernames || username == "Joining" || username.toLowerCase().includes('(host)')) {
+        if (username in usernames || username == "Joining" || username.toLowerCase().includes('(host)') || username.toLowerCase().includes('(judge)')) {
             socket.emit('UsernameInvalid', 'Invalid');
         } else {
             clients[socket.id].data.username = username;
@@ -154,11 +158,13 @@ io.on('connection', function (socket) {
                 i++;
             }
             io.sockets.emit('PlayerListUpdate', players);
+            readyCount++;
+            clients[socket.id].data.ready = true;
         }
     });
 
     socket.on('BeginGame', function () {
-        if (playerCount >= 3) {
+        if (readyCount >= 3) {
             gameStarted = true;
             currentJudge = randomProperty(clients);
             let i = 0;

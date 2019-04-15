@@ -59,6 +59,18 @@ function create() {
         document.getElementById('player6').innerHTML = players[5];
         document.getElementById('player7').innerHTML = players[6];
         document.getElementById('player8').innerHTML = players[7];
+        let i = 1;
+        players.forEach(function (element) {
+            if (i != 9) {
+                let tempID = "player" + i;
+                if (element != '') {
+                    document.getElementById(tempID).style.display = '';
+                } else {
+                    document.getElementById(tempID).style.display = 'none';
+                }
+                i++;
+            }
+        });
     });
 
     this.socket.on('GameStarted', function () {
@@ -117,6 +129,18 @@ function create() {
         document.getElementById('response6').innerHTML = responses[5];
         document.getElementById('response7').innerHTML = responses[6];
         document.getElementById('response8').innerHTML = responses[7];
+        let i = 1;
+        responses.forEach(function (element) {
+            if (i != 9) {
+                let tempID = "response" + i;
+                if (element != '') {
+                    document.getElementById(tempID).style.display = '';
+                } else {
+                    document.getElementById(tempID).style.display = 'none';
+                }
+                i++;
+            }
+        });
     });
 
     this.socket.on('AllResponsesReceived', function (rCount) {

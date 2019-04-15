@@ -1,0 +1,14 @@
+﻿body {
+    background-color:lightblue;
+}
+
+.center {
+    margin: auto;
+    width: 75%;
+    text-align: center;
+    padding: 10px;
+}
+
+.input-field label {
+    color: black;
+}
