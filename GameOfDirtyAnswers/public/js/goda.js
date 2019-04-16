@@ -17,7 +17,7 @@ function create() {
     }
 
     this.socket = io('/game');
-
+    document.getElementById('ID').innerHTML = sessionStorage.getItem('gameID');
     winner = document.getElementById('winner');
     body = document.getElementById('body');
     gameStarted = document.getElementById('gameStarted');
@@ -122,6 +122,7 @@ function create() {
             alert("Connection Lost");
             socket.disconnect(true);
             location.href = '/';
+            sessionStorage.removeItem('gameID');
         }
     });
 
@@ -188,6 +189,7 @@ function create() {
     this.socket.on('GameOver', function () {
         disconnectOP = true;
         socket.disconnect(true);
+        sessionStorage.removeItem('gameID');
         location.href = '/gameover.html';
     });
 
