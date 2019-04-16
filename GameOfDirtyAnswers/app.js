@@ -59,6 +59,7 @@ other.on('connection', function (socket) {
                 let i = 0;
                 for (var key in games[gameID].clients) {
                     games[gameID].players[i] = games[gameID].clients[key].data.username;
+                    games[gameID].playerPoints[i] = games[gameID].clients[key].data.points;
                     if (games[gameID].clients[key].data.host) {
                         games[gameID].players[i] = games[gameID].players[i] + ' (Host)';
                     }
@@ -71,7 +72,7 @@ other.on('connection', function (socket) {
                     games[gameID].players[i] = ''
                     i++;
                 }
-                other.to(gameID).emit('PlayerListUpdate', games[gameID].players);
+                other.to(gameID).emit('PlayerListUpdate', games[gameID].players, games[gameID].playerPoints);
             }
         }
     });
@@ -95,6 +96,7 @@ other.on('connection', function (socket) {
                 let i = 0;
                 for (var key in games[gameID].clients) {
                     games[gameID].players[i] = games[gameID].clients[key].data.username;
+                    games[gameID].playerPoints[i] = games[gameID].clients[key].data.points;
                     if (games[gameID].clients[key].data.host) {
                         games[gameID].players[i] = games[gameID].players[i] + ' (Host)';
                     }
@@ -107,7 +109,7 @@ other.on('connection', function (socket) {
                     games[gameID].players[i] = ''
                     i++;
                 }
-                io.sockets.emit('PlayerListUpdate', games[gameID].players);
+                other.to(gameID).emit('PlayerListUpdate', games[gameID].players, games[gameID].playerPoints);
                 if (games[gameID].readyCount < 3 && games[gameID].gameStarted) {
                     delete games[gameID];
                     other.to(gameID).emit('tooFewPlayersLeft');
@@ -118,28 +120,7 @@ other.on('connection', function (socket) {
                     let i = 0;
                     for (var key in games[gameID].clients) {
                         games[gameID].players[i] = games[gameID].clients[key].data.username;
-                        if (games[gameID].clients[key].data.host) {
-                            games[gameID].players[i] = games[gameID].players[i] + ' (Host)';
-                        }
-                        if (games[gameID].clients[key] == games[gameID].currentJudge) {
-                            games[gameID].players[i] = games[gameID].players[i] + ' (Judge)';
-                        }
-                        i++;
-                    }
-                    while (i <= 8) {
-                        game.players[i] = ''
-                        i++;
-                    }
-                    other.to(gameID).emit('PlayerListUpdate', games[gameID].players);
-                }
-                if (wasJudge && games[gameID].gameStarted) {
-                    games[gameID].responseSIDs = ["", "", "", "", "", "", "", ""];
-                    games[gameID].responses = ["", "", "", "", "", "", "", ""];
-                    games[gameID].currentResonseCount = 0;
-                    games[gameID].currentJudge = randomProperty(games[gameID].clients);
-                    let i = 0;
-                    for (var key in games[gameID].clients) {
-                        games[gameID].players[i] = games[gameID].clients[key].data.username;
+                        games[gameID].playerPoints[i] = games[gameID].clients[key].data.points;
                         if (games[gameID].clients[key].data.host) {
                             games[gameID].players[i] = games[gameID].players[i] + ' (Host)';
                         }
@@ -152,7 +133,30 @@ other.on('connection', function (socket) {
                         games[gameID].players[i] = ''
                         i++;
                     }
-                    other.to(gameID).emit('PlayerListUpdate', games[gameID].players);
+                    other.to(gameID).emit('PlayerListUpdate', games[gameID].players, games[gameID].playerPoints);
+                }
+                if (wasJudge && games[gameID].gameStarted) {
+                    games[gameID].responseSIDs = ["", "", "", "", "", "", "", ""];
+                    games[gameID].responses = ["", "", "", "", "", "", "", ""];
+                    games[gameID].currentResonseCount = 0;
+                    games[gameID].currentJudge = randomProperty(games[gameID].clients);
+                    let i = 0;
+                    for (var key in games[gameID].clients) {
+                        games[gameID].players[i] = games[gameID].clients[key].data.username;
+                        games[gameID].playerPoints[i] = games[gameID].clients[key].data.points;
+                        if (games[gameID].clients[key].data.host) {
+                            games[gameID].players[i] = games[gameID].players[i] + ' (Host)';
+                        }
+                        if (games[gameID].clients[key] == games[gameID].currentJudge) {
+                            games[gameID].players[i] = games[gameID].players[i] + ' (Judge)';
+                        }
+                        i++;
+                    }
+                    while (i <= 8) {
+                        games[gameID].players[i] = ''
+                        i++;
+                    }
+                    other.to(gameID).emit('PlayerListUpdate', games[gameID].players, games[gameID].playerPoints);
                     other.to(gameID).emit('StartingNewRound');
                     other.to(gameID).emit('StartingGame', games[gameID].currentJudge.sid);
                 }
@@ -174,6 +178,7 @@ other.on('connection', function (socket) {
             let i = 0;
             for (var key in games[gameID].clients) {
                 games[gameID].players[i] = games[gameID].clients[key].data.username;
+                games[gameID].playerPoints[i] = games[gameID].clients[key].data.points;
                 if (games[gameID].clients[key].data.host) {
                     games[gameID].players[i] = games[gameID].players[i] + ' (Host)';
                 }
@@ -182,12 +187,11 @@ other.on('connection', function (socket) {
                 }
                 i++;
             }
-
             while (i <= 8) {
                 games[gameID].players[i] = ''
                 i++;
             }
-            other.to(gameID).emit('PlayerListUpdate', games[gameID].players);
+            other.to(gameID).emit('PlayerListUpdate', games[gameID].players, games[gameID].playerPoints);
             games[gameID].readyCount++;
             games[gameID].clients[socket.id].data.ready = true;
         }
@@ -202,6 +206,7 @@ other.on('connection', function (socket) {
             let i = 0;
             for (var key in games[gameID].clients) {
                 games[gameID].players[i] = games[gameID].clients[key].data.username;
+                games[gameID].playerPoints[i] = games[gameID].clients[key].data.points;
                 if (games[gameID].clients[key].data.host) {
                     games[gameID].players[i] = games[gameID].players[i] + ' (Host)';
                 }
@@ -214,7 +219,7 @@ other.on('connection', function (socket) {
                 games[gameID].players[i] = ''
                 i++;
             }
-            other.to(gameID).emit('PlayerListUpdate', games[gameID].players);
+            other.to(gameID).emit('PlayerListUpdate', games[gameID].players, games[gameID].playerPoints);
             other.to(gameID).emit('StartingGame', games[gameID].currentJudge.sid);
             let phrase = randomProperty(games[gameID].questions);
             delete games[gameID].questions[getKeyByValue(games[gameID].questions, phrase)];
@@ -241,8 +246,25 @@ other.on('connection', function (socket) {
         gameID = socketGames[socket.id];
         games[gameID].clients = games[gameID].clients;
         games[gameID].clients[games[gameID].responseSIDs[selection - 1]].data.points++;
+        let i = 0;
+        for (var key in games[gameID].clients) {
+            games[gameID].players[i] = games[gameID].clients[key].data.username;
+            games[gameID].playerPoints[i] = games[gameID].clients[key].data.points;
+            if (games[gameID].clients[key].data.host) {
+                games[gameID].players[i] = games[gameID].players[i] + ' (Host)';
+            }
+            if (games[gameID].clients[key] == games[gameID].currentJudge) {
+                games[gameID].players[i] = games[gameID].players[i] + ' (Judge)';
+            }
+            i++;
+        }
+        while (i <= 8) {
+            games[gameID].players[i] = ''
+            i++;
+        }
+        other.to(gameID).emit('PlayerListUpdate', games[gameID].players, games[gameID].playerPoints);
         currentJudge = games[gameID].clients[games[gameID].responseSIDs[selection - 1]];
-        other.to(gameID).emit('Winner', games[gameID].responseSIDs[selection - 1], games[gameID].clients[responseSIDs[selection - 1]].data.username, games[gameID].responses[selection - 1]);
+        other.to(gameID).emit('Winner', games[gameID].responseSIDs[selection - 1], games[gameID].clients[games[gameID].responseSIDs[selection - 1]].data.username, games[gameID].responses[selection - 1]);
     });
 
     socket.on('NewRound', function () {
@@ -253,10 +275,11 @@ other.on('connection', function (socket) {
             games[gameID].responses = ["", "", "", "", "", "", "", ""];
             games[gameID].currentResonseCount = 0;
             phrase = randomProperty(games[gameID].questions);
-            delete games[gameID].questions[getKeyByValue(questions, phrase)];
+            delete games[gameID].questions[getKeyByValue(games[gameID].questions, phrase)];
             let i = 0;
-            for (var key in clients) {
+            for (var key in games[gameID].clients) {
                 games[gameID].players[i] = games[gameID].clients[key].data.username;
+                games[gameID].playerPoints[i] = games[gameID].clients[key].data.points;
                 if (games[gameID].clients[key].data.host) {
                     games[gameID].players[i] = games[gameID].players[i] + ' (Host)';
                 }
@@ -269,7 +292,7 @@ other.on('connection', function (socket) {
                 games[gameID].players[i] = ''
                 i++;
             }
-            other.to(gameID).emit('PlayerListUpdate', games[gameID].players);
+            other.to(gameID).emit('PlayerListUpdate', games[gameID].players, games[gameID].playerPoints);
             other.to(gameID).emit('StartingNewRound');
             other.to(gameID).emit('NewPhrase', phrase);
             other.to(gameID).emit('StartingGame', games[gameID].currentJudge.sid);
@@ -300,7 +323,8 @@ gameRoom.on('connection', function (socket) {
                 'responseSIDs': ["", "", "", "", "", "", "", ""],
                 'currentResonseCount': 0,
                 'readyCount': 0,
-                'questions': require('./questions.json')
+                'questions': require('./questions.json'),
+                'playerPoints': [0, 0, 0, 0, 0, 0, 0, 0]
             }
             socket.emit('ClearToConnect');
         }

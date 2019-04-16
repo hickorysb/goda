@@ -55,15 +55,15 @@ function create() {
         document.getElementById('gameFull').style.display = '';
     });
 
-    this.socket.on('PlayerListUpdate', function (players) {
-        document.getElementById('player1').innerHTML = players[0];
-        document.getElementById('player2').innerHTML = players[1];
-        document.getElementById('player3').innerHTML = players[2];
-        document.getElementById('player4').innerHTML = players[3];
-        document.getElementById('player5').innerHTML = players[4];
-        document.getElementById('player6').innerHTML = players[5];
-        document.getElementById('player7').innerHTML = players[6];
-        document.getElementById('player8').innerHTML = players[7];
+    this.socket.on('PlayerListUpdate', function (players, playerPoints) {
+        document.getElementById('player1').innerHTML = players[0] + '<br />' + playerPoints[0] + ' Points';
+        document.getElementById('player2').innerHTML = players[1] + '<br />' + playerPoints[1] + ' Points';
+        document.getElementById('player3').innerHTML = players[2] + '<br />' + playerPoints[2] + ' Points';
+        document.getElementById('player4').innerHTML = players[3] + '<br />' + playerPoints[3] + ' Points';
+        document.getElementById('player5').innerHTML = players[4] + '<br />' + playerPoints[4] + ' Points';
+        document.getElementById('player6').innerHTML = players[5] + '<br />' + playerPoints[5] + ' Points';
+        document.getElementById('player7').innerHTML = players[6] + '<br />' + playerPoints[6] + ' Points';
+        document.getElementById('player8').innerHTML = players[7] + '<br />' + playerPoints[7] + ' Points';
         let i = 1;
         players.forEach(function (element) {
             if (i != 9) {
