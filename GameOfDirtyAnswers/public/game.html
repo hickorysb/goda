@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Game Of Dirty Answers</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/main.css" />
+</head>
+<body onload="create();" id="body" style="visibility: hidden;">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/goda.js"></script>
+    <h1 class="center">Welcome to Game of Dirty Answers</h1>
+    <h3 class="center">This is a work in progress</h3>
+    <div id="errors" class="center">
+        <h4 id="gameFull" style="display: none;color: red;">The game is full!</h4>
+        <h4 id="gameStarted" style="display: none;color: red;">The game is already in progress!</h4>
+    </div>
+    <div id="userForm" class="center">
+        <div class="input-field">
+            <input type="text" id="usernameEntry" /> <br />
+            <label for="usernameEntry">Username</label>
+        </div>
+        <button type="button" onclick="setUser();" class="waves-effect waves-light btn">Set Username</button>
+        <p style="color: red; display: none;" id="usernameInvalid" class="center">Your username is invalid or already in use.</p>
+    </div>
+    <div id="waiting" class="center" style="display: none;">
+        <h4>Waiting For Players!</h4>
+        <button type="button" style="display: none" id="startButton" onclick="startGame();" class="waves-effect waves-light btn">Start Game</button>
+        <p style="color: red; display: none;" id="tooFewPlayers">At least three people must be present to play.</p>
+    </div>
+    <div id="game" style="display: none;">
+        <h4 id="phrase"></h4>
+        <div id="responses" style="display: none">
+            <ul class="collection">
+            <li class="collection-item" style="display: none;" id="response1"></li>
+            <li class="collection-item" style="display: none;" id="response2"></li>
+            <li class="collection-item" style="display: none;" id="response3"></li>
+            <li class="collection-item" style="display: none;" id="response4"></li>
+            <li class="collection-item" style="display: none;" id="response5"></li>
+            <li class="collection-item" style="display: none;" id="response6"></li>
+            <li class="collection-item" style="display: none;" id="response7"></li>
+            <li class="collection-item" style="display: none;" id="response8"></li>
+            </ul>
+        </div>
+        <h4 id="waitingr">Waiting for responses</h4>
+        <h4 id="winner" style="display: none"></h4>
+        <button id="newRound" type="button" onclick="newRound();" style="display: none" class="waves-effect waves-light btn">New Round</button>
+        <div id="judge" style="display: none">
+            <button type="button" style="display:none" onclick="submitDecision(1);" id="btnresponse1" class="waves-effect waves-light btn">Response 1</button>
+            <button type="button" style="display:none" onclick="submitDecision(2);" id="btnresponse2" class="waves-effect waves-light btn">Response 2</button>
+            <button type="button" style="display:none" onclick="submitDecision(3);" id="btnresponse3" class="waves-effect waves-light btn">Response 3</button>
+            <button type="button" style="display:none" onclick="submitDecision(4);" id="btnresponse4" class="waves-effect waves-light btn">Response 4</button>
+            <button type="button" style="display:none" onclick="submitDecision(5);" id="btnresponse5" class="waves-effect waves-light btn">Response 5</button>
+            <button type="button" style="display:none" onclick="submitDecision(6);" id="btnresponse6" class="waves-effect waves-light btn">Response 6</button>
+            <button type="button" style="display:none" onclick="submitDecision(7);" id="btnresponse7" class="waves-effect waves-light btn">Response 7</button>
+            <button type="button" style="display:none" onclick="submitDecision(8);" id="btnresponse8" class="waves-effect waves-light btn">Response 8</button>
+        </div>
+        <div id="respondent" style="display: none">
+            <div class="input-field">
+                <input type="text" id="response" />
+                <label for="response">Response</label>
+            </div>
+            <button type="button" id="submitResponse" onclick="submitResponse();" class="waves-effect waves-light btn">Submit Response</button>
+        </div>
+    </div>
+    <div id="playerList" style="display: none;">
+        <h3>Player List:</h3>
+        <ul class="collection">
+            <li class="collection-item" style="display: none;" id="player1"></li>
+            <li class="collection-item" style="display: none;" id="player2"></li>
+            <li class="collection-item" style="display: none;" id="player3"></li>
+            <li class="collection-item" style="display: none;" id="player4"></li>
+            <li class="collection-item" style="display: none;" id="player5"></li>
+            <li class="collection-item" style="display: none;" id="player6"></li>
+            <li class="collection-item" style="display: none;" id="player7"></li>
+            <li class="collection-item" style="display: none;" id="player8"></li>
+        </ul>
+    </div>
+</body>
+</html>

@@ -12,7 +12,11 @@ var game;
 var responses;
 
 function create() {
-    this.socket = io();
+    if (sessionStorage.getItem('gameID') == null) {
+        location.href = '/';
+    }
+
+    this.socket = io('/game');
 
     winner = document.getElementById('winner');
     body = document.getElementById('body');
@@ -24,6 +28,7 @@ function create() {
     game = document.getElementById('game');
     responses = document.getElementById('responses');
 
+    this.socket.emit('JoinGame', sessionStorage.getItem('gameID'));
 
     this.socket.on('Connected', function (host) {
         body.style.visibility = 'visible';
@@ -116,7 +121,7 @@ function create() {
         if (!disconnectOP) {
             alert("Connection Lost");
             socket.disconnect(true);
-            location.reload();
+            location.href = '/';
         }
     });
 
