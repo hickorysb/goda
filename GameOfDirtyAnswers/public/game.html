@@ -11,22 +11,29 @@
 <body onload="create();" id="body" style="visibility: hidden;">
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/goda.js"></script>
-    <h1 class="center">Welcome to Game of Dirty Answers</h1>
-    <h3 class="center">This is a work in progress</h3>
-    <p class="center">Game ID: <span id="ID"></span></p>
-    <div id="errors" class="center">
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo">&nbspGame of Dirty Answers</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li>Game ID: <span id="ID"></span>&nbsp&nbsp&nbsp</li>
+                <li>Version 1.0&nbsp&nbsp&nbsp</li>
+                <li>Warning Alpha!&nbsp&nbsp</li>
+            </ul>
+        </div>
+    </nav>
+    <div id="errors" class="centerm">
         <h4 id="gameFull" style="display: none;color: red;">The game is full!</h4>
         <h4 id="gameStarted" style="display: none;color: red;">The game is already in progress!</h4>
     </div>
-    <div id="userForm" class="center">
+    <div id="userForm" class="centerm">
         <div class="input-field">
             <input type="text" id="usernameEntry" /> <br />
             <label for="usernameEntry">Username</label>
         </div>
         <button type="button" onclick="setUser();" class="waves-effect waves-light btn">Set Username</button>
-        <p style="color: red; display: none;" id="usernameInvalid" class="center">Your username is invalid or already in use.</p>
+        <p style="color: red; display: none;" id="usernameInvalid" class="centerm">Your username is invalid or already in use.</p>
     </div>
-    <div id="waiting" class="center" style="display: none;">
+    <div id="waiting" class="centerm" style="display: none;">
         <h4>Waiting For Players!</h4>
         <button type="button" style="display: none" id="startButton" onclick="startGame();" class="waves-effect waves-light btn">Start Game</button>
         <p style="color: red; display: none;" id="tooFewPlayers">At least three people must be present to play.</p>
@@ -35,14 +42,14 @@
         <h4 id="phrase"></h4>
         <div id="responses" style="display: none">
             <ul class="collection">
-            <li class="collection-item" style="display: none;" id="response1"></li>
-            <li class="collection-item" style="display: none;" id="response2"></li>
-            <li class="collection-item" style="display: none;" id="response3"></li>
-            <li class="collection-item" style="display: none;" id="response4"></li>
-            <li class="collection-item" style="display: none;" id="response5"></li>
-            <li class="collection-item" style="display: none;" id="response6"></li>
-            <li class="collection-item" style="display: none;" id="response7"></li>
-            <li class="collection-item" style="display: none;" id="response8"></li>
+                <li class="collection-item" style="display: none;" id="response1"></li>
+                <li class="collection-item" style="display: none;" id="response2"></li>
+                <li class="collection-item" style="display: none;" id="response3"></li>
+                <li class="collection-item" style="display: none;" id="response4"></li>
+                <li class="collection-item" style="display: none;" id="response5"></li>
+                <li class="collection-item" style="display: none;" id="response6"></li>
+                <li class="collection-item" style="display: none;" id="response7"></li>
+                <li class="collection-item" style="display: none;" id="response8"></li>
             </ul>
         </div>
         <h4 id="waitingr">Waiting for responses</h4>
@@ -79,5 +86,12 @@
             <li class="collection-item" style="display: none;" id="player8"></li>
         </ul>
     </div>
+    <footer class="page-footer">
+        <div class="footer-copyright">
+            <div class="container">
+                <p class="grey-text text-lighten-4 right">Version 1.0</p>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>

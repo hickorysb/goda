@@ -1,8 +1,11 @@
 ﻿body {
     background-color: lightblue;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
 }
 
-.center {
+.centerm {
     margin: auto;
     width: 75%;
     text-align: center;
@@ -15,6 +18,10 @@
 
 .collapsible-body {
     background-color: white;
+}
+
+main {
+    flex: 1 0 auto;
 }
 
 .nav-wrapper {
@@ -30,6 +37,10 @@
     margin: auto;
 }
 
+.collection {
+    margin: 10px;
+}
+
 .loading {
     display: flex;
     align-items: center;
@@ -41,4 +52,8 @@
     left: 0;
     right: 0;
     bottom: 0;
+}
+
+.page-footer {
+    background-color: teal;
 }

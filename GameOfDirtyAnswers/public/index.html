@@ -11,9 +11,16 @@
 <body onload="create();">
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/gameRoom.js"></script>
-    <h1 class="center">Welcome to Game of Dirty Answers</h1>
-    <h3 class="center">This is a work in progress</h3>
-    <div class="center">
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo">&nbspGame of Dirty Answers</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li>Version 1.0&nbsp&nbsp&nbsp</li>
+                <li>Warning Alpha!&nbsp&nbsp</li>
+            </ul>
+        </div>
+    </nav>
+    <div class="centerm">
         <div class="input-field">
             <input type="text" id="gameIDEntry" />
             <label for="gameIDEntry">Game ID</label>
@@ -25,5 +32,12 @@
         <p style="display: none; color: red;" id="gameAlreadyStartedError">Game already started.</p>
         <p style="display: none; color: red;" id="gameFullError">Game is full.</p>
     </div>
+    <footer class="page-footer">
+        <div class="footer-copyright">
+            <div class="container">
+                <p class="grey-text text-lighten-4 right">Version 1.0</p>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
