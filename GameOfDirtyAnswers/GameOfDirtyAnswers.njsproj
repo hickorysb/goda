@@ -29,13 +29,34 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="app.js" />
-    <Compile Include="public\js\goda.js">
+    <Compile Include="public\js\admin.js" />
+    <Compile Include="public\js\adminLogin.js" />
+    <Compile Include="public\js\gameRoom.js" />
+    <Compile Include="public\js\goda.js" />
+    <Compile Include="views\adminLogin.js">
       <SubType>Code</SubType>
     </Compile>
-    <Content Include="blanks.json" />
+    <Compile Include="serversetup.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="views\gameRoom.js" />
+    <Compile Include="views\goda.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Content Include="config.json" />
+    <Content Include="public\admin\admin.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="public\admin\index.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="public\css\admin.css">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="public\css\main.css">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="public\game.html" />
     <Content Include="public\gameover.html">
       <SubType>Code</SubType>
     </Content>
@@ -49,9 +70,11 @@
     <Content Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="views\" />
     <Folder Include="public\" />
     <Folder Include="public\js\" />
     <Folder Include="public\css\" />
+    <Folder Include="public\admin\" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />

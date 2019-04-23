@@ -30,6 +30,10 @@ function create() {
 
     this.socket.emit('JoinGame', sessionStorage.getItem('gameID'));
 
+    this.socket.on('Cheater', function () {
+        alert("The gods of the dirty minded nation are watching.");
+    });
+
     this.socket.on('Connected', function (host) {
         body.style.visibility = 'visible';
         isHost = host;

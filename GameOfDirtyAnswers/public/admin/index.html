@@ -3,9 +3,57 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
-    <title></title>
+    <title>GODA | Admin Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="/css/admin.css" />
 </head>
-<body>
+<body onload="create();">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/adminLogin.js"></script>
+    <div class="section"></div>
+    <main>
+        <center>
+            <h3>GODA ADMIN</h3>
+            <div class="section"></div>
+            <div class="section"></div>
 
+            <div class="container">
+                <div class="z-depth-1 grey lighten-4 row" style="display: inline-block; padding: 32px 48px 0px 48px; border: 1px solid #EEE;">
+
+                    <div class='row'>
+                        <div class='col s12'>
+                            <h5>Game of Dirty Answers</h5>
+                        </div>
+                    </div>
+
+                    <div class='row'>
+                        <div class='input-field col s12'>
+                            <input class='validate' type='text' name='username' id='username' />
+                            <label for='email'>Admin Username</label>
+                        </div>
+                    </div>
+
+                    <div class='row'>
+                        <div class='input-field col s12'>
+                            <input class='validate' type='password' name='password' id='password' />
+                            <label for='password'>Admin Password</label>
+                        </div>
+                    </div>
+
+                    <br />
+                    <center>
+                        <div class='row'>
+                            <button type='button' name='btn_login' class='col s12 btn btn-large waves-effect indigo' onclick="login();">Login</button>
+                        </div>
+                        <div class="row">
+                            <p id="iupwd" style="display: none">Invalid username or password.</p>
+                        </div>
+                    </center>
+                </div>
+            </div>
+        </center>
+    </main>
 </body>
 </html>

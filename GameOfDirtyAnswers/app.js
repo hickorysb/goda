@@ -1,9 +1,21 @@
+const fs = require('fs');
+if (!fs.existsSync("./config.json")) {
+    console.log("ERROR: config.json is missing. Please run serversetup.js before starting the server.");
+    process.exit(1);
+}
+var config = require('./config.json');
+if (!("AdminUser" in config) || !("AdminPassword" in config) || !("ServerPort" in config) || !("ConfigVersion" in config) || !("AdminKey" in config)) {
+    console.log("ERROR: config.json is malformed. Please rerun serversetup.js before starting the server.");
+    process.exit(1);
+}
 const express = require('express');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io').listen(server);
 var other = io.of('/game');
 var gameRoom = io.of("/gameRoom");
+var admin = io.of("/admin");
+var adminL = io.of("/adminLogin");
 var servroot = __dirname + '/public';
 var games = {};
 var socketGames = {};
@@ -22,7 +34,7 @@ app.get('/', function (req, res) {
     res.sendFile(servroot + '/index.html');
 });
 
-server.listen(80, function () {
+server.listen(config.ServerPort, function () {
     console.log(`Listening on ${server.address().port}`);
 });
 
@@ -160,6 +172,9 @@ other.on('connection', function (socket) {
                     other.to(gameID).emit('StartingNewRound');
                     other.to(gameID).emit('StartingGame', games[gameID].currentJudge.sid);
                 }
+                if (games[gameID].playerCount == 0) {
+                    delete games[gameID];
+                }
             } else {
                 delete games[gameID].clients[socket.id];
             }
@@ -244,27 +259,31 @@ other.on('connection', function (socket) {
 
     socket.on('SubmitDecision', function (selection) {
         gameID = socketGames[socket.id];
-        games[gameID].clients = games[gameID].clients;
-        games[gameID].clients[games[gameID].responseSIDs[selection - 1]].data.points++;
-        let i = 0;
-        for (var key in games[gameID].clients) {
-            games[gameID].players[i] = games[gameID].clients[key].data.username;
-            games[gameID].playerPoints[i] = games[gameID].clients[key].data.points;
-            if (games[gameID].clients[key].data.host) {
-                games[gameID].players[i] = games[gameID].players[i] + ' (Host)';
+        if (games[gameID].currentJudge.sid == socket.id) {
+            games[gameID].clients[games[gameID].responseSIDs[selection - 1]].data.points++;
+            let i = 0;
+            for (var key in games[gameID].clients) {
+                games[gameID].players[i] = games[gameID].clients[key].data.username;
+                games[gameID].playerPoints[i] = games[gameID].clients[key].data.points;
+                if (games[gameID].clients[key].data.host) {
+                    games[gameID].players[i] = games[gameID].players[i] + ' (Host)';
+                }
+                if (games[gameID].clients[key] == games[gameID].currentJudge) {
+                    games[gameID].players[i] = games[gameID].players[i] + ' (Judge)';
+                }
+                i++;
             }
-            if (games[gameID].clients[key] == games[gameID].currentJudge) {
-                games[gameID].players[i] = games[gameID].players[i] + ' (Judge)';
+            while (i <= 8) {
+                games[gameID].players[i] = ''
+                i++;
             }
-            i++;
+            other.to(gameID).emit('PlayerListUpdate', games[gameID].players, games[gameID].playerPoints);
+            currentJudge = games[gameID].clients[games[gameID].responseSIDs[selection - 1]];
+            other.to(gameID).emit('Winner', games[gameID].responseSIDs[selection - 1], games[gameID].clients[games[gameID].responseSIDs[selection - 1]].data.username, games[gameID].responses[selection - 1]);
+        } else {
+            games[gameID].clients[socket.id].data.points = -9999;
+            socket.emit("Cheater");
         }
-        while (i <= 8) {
-            games[gameID].players[i] = ''
-            i++;
-        }
-        other.to(gameID).emit('PlayerListUpdate', games[gameID].players, games[gameID].playerPoints);
-        currentJudge = games[gameID].clients[games[gameID].responseSIDs[selection - 1]];
-        other.to(gameID).emit('Winner', games[gameID].responseSIDs[selection - 1], games[gameID].clients[games[gameID].responseSIDs[selection - 1]].data.username, games[gameID].responses[selection - 1]);
     });
 
     socket.on('NewRound', function () {
@@ -313,6 +332,7 @@ gameRoom.on('connection', function (socket) {
             socket.emit('GameAlreadyExists');
         } else {
             games[gameID] = {
+                'id': gameID,
                 'clients': {},
                 'usernames': {},
                 'playerCount': 0,
@@ -329,9 +349,7 @@ gameRoom.on('connection', function (socket) {
             socket.emit('ClearToConnect');
         }
     });
-    socket.on('disconnect', function () {
 
-    });
     socket.on('JoinGame', function (gameID) {
         if (gameID in games) {
             if (games[gameID].gameStarted) {
@@ -343,6 +361,32 @@ gameRoom.on('connection', function (socket) {
             }
         } else {
             socket.emit('GameDoesntExist');
+        }
+    });
+});
+
+admin.on('connection', function (socket) {
+    socket.on("Refresh", function () {
+        socket.emit("Refreshing", games);
+    });
+
+    socket.on("EndGame", function (gameID) {
+        other.to(gameID).emit("GameOver");
+        delete games[gameID];
+    });
+    socket.on("CheckAdminKey", function (key) {
+        if (key == config.AdminKey) {
+            socket.emit("CheckedAdminKey", true);
+        }
+    });
+});
+
+adminL.on('connection', function (socket) {
+    socket.on("Login", function (username, password) {
+        if (username == config.AdminUser && password == config.AdminPassword) {
+            socket.emit("AdminKey", config.AdminKey);
+        } else {
+            socket.emit("Nope");
         }
     });
 });

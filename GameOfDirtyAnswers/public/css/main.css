@@ -1,5 +1,5 @@
 ﻿body {
-    background-color:lightblue;
+    background-color: lightblue;
 }
 
 .center {
@@ -11,4 +11,34 @@
 
 .input-field label {
     color: black;
+}
+
+.collapsible-body {
+    background-color: white;
+}
+
+.nav-wrapper {
+    background-color: teal;
+}
+
+.loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #eee;
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
