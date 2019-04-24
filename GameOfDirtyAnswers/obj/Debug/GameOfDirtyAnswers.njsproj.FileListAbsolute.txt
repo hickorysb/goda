@@ -1,3 +1,0 @@
-C:\Users\lolk4\source\repos\GameOfDirtyAnswers\GameOfDirtyAnswers\obj\Debug\GameOfDirtyAnswers.njsprojAssemblyReference.cache
-C:\Users\lolk4\source\repos\GameOfDirtyAnswers\GameOfDirtyAnswers\obj\Debug\GameOfDirtyAnswers.njsproj.CoreCompileInputs.cache
-C:\Users\lolk4\source\repos\GameOfDirtyAnswers\GameOfDirtyAnswers\bin\Microsoft.NodejsTools.WebRole.dll
