@@ -29,18 +29,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="app.js" />
+    <Compile Include="public\js\settings.js" />
     <Compile Include="public\js\admin.js" />
     <Compile Include="public\js\adminLogin.js" />
     <Compile Include="public\js\gameRoom.js" />
     <Compile Include="public\js\goda.js" />
-    <Compile Include="views\adminLogin.js">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="serversetup.js">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="views\gameRoom.js" />
-    <Compile Include="views\goda.js">
       <SubType>Code</SubType>
     </Compile>
     <Content Include="config.json" />
@@ -50,6 +44,7 @@
     <Content Include="public\admin\index.html">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="public\admin\settings.html" />
     <Content Include="public\css\admin.css">
       <SubType>Code</SubType>
     </Content>
@@ -70,7 +65,6 @@
     <Content Include="README.md" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="views\" />
     <Folder Include="public\" />
     <Folder Include="public\js\" />
     <Folder Include="public\css\" />

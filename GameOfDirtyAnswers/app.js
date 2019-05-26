@@ -28,6 +28,8 @@ function randomProperty(obj) {
     return obj[keys[keys.length * Math.random() << 0]];
 };
 
+app.use('/vs', express.static(__dirname + '/node_modules/monaco-editor/min/vs/'));
+
 app.use(express.static(servroot));
 
 app.get('/', function (req, res) {
