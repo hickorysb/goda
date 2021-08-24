@@ -1,0 +1,24 @@
+{
+  "name": "goda",
+  "version": "1.0.0",
+  "description": "Game of Dirty Answers is a browser based cross of Game of Things by the company Quinn &amp; Sherry Inc. and Cards Against Humanity by the company Cards Against Humanity LLC.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hickorysb/goda.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hickorysb/goda/issues"
+  },
+  "homepage": "https://github.com/hickorysb/goda#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^4.1.3"
+  }
+}

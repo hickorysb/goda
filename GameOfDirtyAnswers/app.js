@@ -11,7 +11,7 @@ if (!("AdminUser" in config) || !("AdminPassword" in config) || !("ServerPort" i
 const express = require('express');
 var app = express();
 var server = require('http').Server(app);
-var io = require('socket.io').listen(server);
+var io = require('socket.io')(server);
 var other = io.of('/game');
 var gameRoom = io.of("/gameRoom");
 var admin = io.of("/admin");
