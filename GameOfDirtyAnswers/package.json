@@ -9,6 +9,6 @@
   "dependencies": {
     "express": "^4.16.4",
     "monaco-editor": "^0.16.2",
-    "socket.io": ">=2.4.0"
+    "socket.io": ">=4.5.4"
   }
 }
